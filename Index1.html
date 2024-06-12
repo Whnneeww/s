@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <title>stop</title> 
+</head> 
+<body> 
+<py-script>
+from flask import Flask, render_template 
+from flask_socketio import SocketIO, emit 
+ 
+app = Flask(__name__) 
+app.config['SECRET_KEY'] = 'secret!' 
+socketio = SocketIO(app) 
+ 
+@app.route('/') 
+def index(): 
+    return render_template('index.html') 
+ 
+@socketio.on('message') 
+def handle_message(message): 
+    print('Received message: ' + message) 
+    emit('response', 'Message received: ' + message) 
+ 
+if __name__ == '__main__': 
+    socketio.run(app, debug=True) 
+ </py-script>
+</body> 
+</html> 
